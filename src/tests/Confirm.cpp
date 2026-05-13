@@ -61,7 +61,7 @@ TEST("Test long long confirms")
     CONFIRM(-20'000'000'000LL, result);
 }
 
-TEST("Test bool pointer dereference  confirms")
+TEST("Test bool pointer dereference confirms")
 {
     bool result1 = true;
     bool result2 = false;
@@ -75,6 +75,33 @@ TEST("Test string and string literal confirms")
 {
     std::string result = "abc";
     CONFIRM("abc", result);
+}
+
+TEST("Test float confirms")
+{
+    float f1 = 0.1f;
+    float f2 = 0.2f;
+    float sum = f1 + f2;
+    float expected = 0.3f;
+    CONFIRM(expected, sum);
+}
+
+TEST("Test double confirms")
+{
+    double d1 = 0.1;
+    double d2 = 0.2;
+    double sum = d1 + d2;
+    double expected = 0.3;
+    CONFIRM(expected, sum);
+}
+
+TEST("Test long double confirms")
+{
+    long double ld1 = 0.1;
+    long double ld2 = 0.2;
+    long double sum = ld1 + ld2;
+    long double expected = 0.3;
+    CONFIRM(expected, sum);
 }
 
 TEST("Test bool confirm failure")

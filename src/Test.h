@@ -2,6 +2,7 @@
 #define MERETDD_TEST_H
 
 #include <ostream>
+#include <source_location>
 #include <string_view>
 #include <string>
 #include <vector>
@@ -61,21 +62,25 @@ namespace MereTDD
         { formatReason(); }
     };
 
-    inline void confirm(bool expected, bool actual, int line)
-    { if(actual != expected) throw BoolConfirmException(expected, line); }
+    inline void confirm(bool expected, bool actual, const std::source_location location = 
+        std::source_location::current())
+    { if(actual != expected) throw BoolConfirmException(expected, location.line()); }
 
-    inline void confirm(std::string_view expected, std::string_view actual, int line)
-    { if(actual != expected) throw ActualConfirmException(expected, actual, line); }
+    inline void confirm(std::string_view expected, std::string_view actual, const std::source_location location = 
+        std::source_location::current())
+    { if(actual != expected) throw ActualConfirmException(expected, actual, location.line()); }
 
-    inline void confirm(std::string const& expected, std::string const& actual, int line)
+    inline void confirm(std::string const& expected, std::string const& actual, const std::source_location location = 
+        std::source_location::current())
     { 
         confirm(
             std::string_view(expected), 
             std::string_view(actual), 
-            line);
+            location);
     }
 
-    inline void confirm (float expected, float actual, int line)
+    inline void confirm (float expected, float actual, const std::source_location location = 
+        std::source_location::current())
     {
         if (actual < (expected - 0.0001f) ||
             actual > (expected + 0.0001f))
@@ -83,12 +88,12 @@ namespace MereTDD
             throw ActualConfirmException(
                 std::to_string(expected),
                 std::to_string(actual),
-                line);
+                location.line());
         }
     }
 
-
-    inline void confirm (double expected, double actual, int line)
+    inline void confirm (double expected, double actual, const std::source_location location = 
+        std::source_location::current())
     {
         if (actual < (expected - 0.000001) ||
             actual > (expected + 0.000001))
@@ -96,11 +101,12 @@ namespace MereTDD
             throw ActualConfirmException(
                 std::to_string(expected),
                 std::to_string(actual),
-                line);
+                location.line());
         }
     }
 
-    inline void confirm (long double expected, long double actual, int line)
+    inline void confirm (long double expected, long double actual, const std::source_location location = 
+        std::source_location::current())
     {
         if (actual < (expected - 0.000001) ||
             actual > (expected + 0.000001))
@@ -108,19 +114,20 @@ namespace MereTDD
             throw ActualConfirmException(
                 std::to_string(expected),
                 std::to_string(actual),
-                line);
+                location.line());
         }
     }
 
     template <typename T>
-    void confirm (T const & expected, T const & actual, int line)
+    void confirm (T const & expected, T const & actual, const std::source_location location = 
+        std::source_location::current())
     {
         if (actual != expected)
         {
             throw ActualConfirmException(
                 std::to_string(expected),
                 std::to_string(actual),
-                line);
+                location.line());
         }
     }
 
@@ -298,10 +305,10 @@ void MERETDD_CLASS::run()
 #endif // TEST_H
 
 #define CONFIRM_FALSE(actual) \
-    MereTDD::confirm(false, actual, __LINE__) \
+    MereTDD::confirm(false, actual)
 
 #define CONFIRM_TRUE(actual) \
-    MereTDD::confirm(true, actual, __LINE__) \
+    MereTDD::confirm(true, actual)
 
 #define CONFIRM(expected, actual) \
-    MereTDD::confirm(expected, actual, __LINE__) \
+    MereTDD::confirm(expected, actual)
