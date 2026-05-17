@@ -1,16 +1,24 @@
 #include "../Test.h"
 
 bool isNegative (int value)
-{ return value < 0; }
+{
+    return value < 0;
+}
 
 int multiplyBy2 (int value)
-{ return value * 2; }
+{
+    return value * 2;
+}
 
 long multiplyBy2 (long value)
-{ return value * 2L; }
+{
+    return value * 2L;
+}
 
 long long multiplyBy2 (long long value)
-{ return value * 2LL; }
+{
+    return value * 2LL;
+}
 
 TEST("Test will pass without any confirms")
 {
@@ -18,9 +26,9 @@ TEST("Test will pass without any confirms")
 
 TEST("Test bool confirms")
 {
-    bool result{isNegative(0)};
+    bool result = isNegative(0);
     CONFIRM_FALSE(result);
-    
+
     result = isNegative(-1);
     CONFIRM_TRUE(result);
 }
@@ -61,14 +69,11 @@ TEST("Test long long confirms")
     CONFIRM(-20'000'000'000LL, result);
 }
 
-TEST("Test bool pointer dereference confirms")
+TEST("Test string confirms")
 {
-    bool result1 = true;
-    bool result2 = false;
-    bool * pResult1 = &result1;
-    bool * pResult2 = &result2;
-    CONFIRM_TRUE(*pResult1);
-    CONFIRM_FALSE(*pResult2);
+    std::string result = "abc";
+    std::string expected = "abc";
+    CONFIRM(expected, result);
 }
 
 TEST("Test string and string literal confirms")
@@ -79,45 +84,47 @@ TEST("Test string and string literal confirms")
 
 TEST("Test float confirms")
 {
-    float f1 = 0.1f;
-    float f2 = 0.2f;
-    float sum = f1 + f2;
-    float expected = 0.3f;
+    float f1{0.1f};
+    float f2{0.2f};
+    float sum{f1 + f2};
+    float expected{0.3f};
     CONFIRM(expected, sum);
 }
 
 TEST("Test double confirms")
 {
-    double d1 = 0.1;
-    double d2 = 0.2;
-    double sum = d1 + d2;
-    double expected = 0.3;
+    double d1{0.1};
+    double d2{0.2};
+    double sum{d1 + d2};
+    double expected{0.3};
     CONFIRM(expected, sum);
 }
 
 TEST("Test long double confirms")
 {
-    long double ld1 = 0.1;
-    long double ld2 = 0.2;
-    long double sum = ld1 + ld2;
-    long double expected = 0.3;
+    long double ld1{0.1};
+    long double ld2{0.2};
+    long double sum{ld1 + ld2};
+    long double expected{0.3};
     CONFIRM(expected, sum);
 }
 
 TEST("Test bool confirm failure")
 {
-    std::string reason = "      Expected: true";
+    std::string reason = "    Expected: true";
     setExpectedFailureReason(reason);
-    bool result {isNegative(0)};
+
+    bool result = isNegative(0);
     CONFIRM_TRUE(result);
 }
 
 TEST("Test int confirm failure")
 {
-    std::string reason = "      Expected: 0\n";
-    reason += "     Actual : 2";
+    std::string reason = "    Expected: 0\n";
+    reason += "    Actual  : 2";
     setExpectedFailureReason(reason);
-    int result {multiplyBy2(1)};
+
+    int result = multiplyBy2(1);
     CONFIRM(0, result);
 }
 
