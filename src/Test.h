@@ -7,9 +7,40 @@
 #include <string_view>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <type_traits>
 
 namespace MereTDD
 {
+     // Проверка: поддерживает ли тип operator<<(ostream&, T)
+    template<typename T, typename = void>
+    struct has_ostream_operator : std::false_type {};
+
+    template<typename T>
+    struct has_ostream_operator<T, std::void_t<
+        decltype(std::declval<std::ostream&>() << std::declval<const T&>())
+    >> : std::true_type {};
+
+    // Основная функция: если есть operator<< — используем его
+    template<typename T>
+    std::string to_string_repr(const T& value) {
+        if constexpr (has_ostream_operator<T>::value) {
+            std::ostringstream oss;
+            oss << value;
+            return oss.str();
+        } else if constexpr (std::is_enum_v<T>) {
+            // Для enum class: приводим к underlying type
+            return std::to_string(static_cast<std::underlying_type_t<T>>(value));
+        } else if constexpr (std::is_arithmetic_v<T>) {
+            // Для чисел — используем std::to_string
+            return std::to_string(value);
+        } else {
+            // Фоллбэк: выводим адрес или заглушку
+            std::ostringstream oss;
+            oss << "<value of type " << typeid(T).name() << " at " << &value << ">";
+            return oss.str();
+        }
+    }
     class ConfirmException
     {
     protected:
