@@ -157,8 +157,8 @@ namespace MereTDD
         if (actual != expected)
         {
             throw ActualConfirmException(
-                std::to_string(expected),
-                std::to_string(actual),
+                to_string_repr(expected),
+                to_string_repr(actual),
                 location.line());
         }
     }
